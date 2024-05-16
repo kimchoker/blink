@@ -58,8 +58,8 @@ const Relative = styled.div`
 	align-items: center;
 	border-radius: 5px;
 	padding: 0.5rem;
-	transition: all 0.5s ease;
-	border: 1px solid #B4B4B8;
+	transition: background-color 0.5s ease;
+	border: ${props => props.clicked ? '2px solid black' : '1px solid #B4B4B8'};
 	background-color: ${props => (props.hover || props.clicked) ? "#EEEDEB" : "transparent"};
 `;
 
