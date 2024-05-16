@@ -69,7 +69,7 @@ const Relative = styled.div`
 	padding: 0.5rem;
 	height: 40px;
 	transition: background-color 0.5s ease;
-	border: ${props => props.clicked && !props.validate ? '2px solid red' : props.clicked ? '2px solid black' : '1px solid #B4B4B8'};
+	border: ${props => props.clicked && !props.validate ? '2px solid red' : props.clicked && props.validate ? '2px solid black' : props.clicked ? '2px solid black' : '1px solid #B4B4B8'};
 	background-color: ${props => (props.hover || props.clicked) ? "#EEEDEB" : "transparent"};
 	box-sizing: border-box;
 `;
@@ -131,26 +131,31 @@ const Login = () => {
 	const Clicked = () => {
 		setIDClick(false);
 		setPWClick(false);
+		
 	}
 
 
 	const [inputEmail, setInputEmail] = useState('');
 	const [inputPW, setInputPW] = useState('');
-	const [validate, setValidate] = useState(false);
+	const [validate, setValidate] = useState(true);
 	
 
 	const onChangeEmail = (event) => {
 		const isThisEmail = (email) => {
 			const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 			
-			return regex.test(email);
+				return regex.test(email);
 			
 		}
 		setInputEmail(event.target.value);
 
-		if(isThisEmail(event.target.value)) {
-				setValidate(true);
-			}
+		if (event.target.value == '') {
+			setValidate(true); 
+		} else if (isThisEmail(event.target.value)) {
+			setValidate(true);
+		} else {
+			setValidate(false);
+		}
 	}
 	
 
