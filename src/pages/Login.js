@@ -2,6 +2,8 @@ import  { React, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { BsEnvelope, BsLock } from "react-icons/bs";
 import btnD from '../images/btnD.png'
+import { useNavigate } from "react-router-dom";
+import { validateEmail } from "../utils/utils"
 
 const Background = styled.div`
 	display: flex;
@@ -136,6 +138,9 @@ const RecoveryButton = styled.div`
 
 const Login = () => {
 
+	const navigate = useNavigate();
+
+
 	// 아이디 비밀번호 hover에 관련된 코드
 	const [IDHover, setIDHover] = useState(false);
 	const [IDClick, setIDClick] = useState(false);
@@ -186,21 +191,7 @@ const Login = () => {
 	
 
 	const onChangeEmail = (event) => {
-		const isThisEmail = (email) => {
-			const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-			
-				return regex.test(email);
-			
-		}
-		setInputEmail(event.target.value);
-
-		if (event.target.value == '') {
-			setValidate(true); 
-		} else if (isThisEmail(event.target.value)) {
-			setValidate(true);
-		} else {
-			setValidate(false);
-		}
+		validateEmail(event.target.value, setInputEmail, setValidate);
 	}
 	
 
@@ -247,7 +238,7 @@ const Login = () => {
 						도움이 필요하신가요?
 					</RecoveryButton>
 					<hr/>
-					<SignUpButton>
+					<SignUpButton onClick={()=> navigate("/signup")}>
 						<BsEnvelope/>
 						<p>이메일로 가입하기</p>
 					</SignUpButton>
