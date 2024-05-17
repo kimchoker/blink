@@ -41,11 +41,15 @@ const LabelDiv = styled.div`
 	margin-bottom: 1rem;
 	display: flex;
 	flex-direction: column;
-	p {
-		color: red;
-		font-size: 0.7rem;
-	}
 `;
+
+const InvisibleP = styled.p`
+  visibility: ${props => props.visible ? 'visible' : 'hidden'};
+  color: red;
+	margin-top: 0.1rem;
+  font-size: 0.7rem;
+  height: 1rem; 
+`
 
 const Label = styled.label`
 	margin-bottom: 0.5rem; 
@@ -96,6 +100,7 @@ const SignUpButton = styled.button`
 	&:disabled {
 		background-color: #C7C8CC;
 		cursor:not-allowed;
+		
 	}
 
 	p {
@@ -103,6 +108,7 @@ const SignUpButton = styled.button`
 		color: white;
 		font-size: 0.8rem;
 		padding: 0.5rem;
+		
 	}
 `;
 
@@ -110,6 +116,8 @@ const WhiteEnvelopeArrowUp = styled(BsEnvelopeArrowUp)`
   color: white;
 	
 `;
+
+
 
 
 
@@ -148,16 +156,18 @@ const SignUp = () => {
 	// button disabled
 	const [buttonDisabled, setButtonDisabled] = useState(true);
 	const [info, setInfo] = useState("");
-	const [visible, setVisible] = useState()
+	const [visible, setVisible] = useState(false)
 	useEffect(() => {
 		if(inputEmail == "") {
 			setInfo("");
+			setVisible(false)
 		} else if (inputEmail !== "" && validate) {
       setButtonDisabled(false);
 			setInfo("");
     } else {
       setButtonDisabled(true);
 			setInfo("올바른 이메일을 입력해주세요")
+			setVisible(true);
     }
   }, [inputEmail, validate]);
 
@@ -174,7 +184,7 @@ const SignUp = () => {
 							<BsEnvelope/>
 							<Input id="id" type="email" value={inputEmail} onChange={onChangeEmail}></Input>		
 						</Relative>
-						<p>{info}</p>
+						<InvisibleP visible={info !== ""}>{info}</InvisibleP>
 					</LabelDiv>
 					<SignUpButton disabled={buttonDisabled}>
 						<p>이메일 인증</p> <WhiteEnvelopeArrowUp/>
