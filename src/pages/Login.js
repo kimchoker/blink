@@ -1,6 +1,7 @@
-import  { React, useState, useEffect, useRef } from "react";
+import  { React, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { BsEnvelope, BsLock } from "react-icons/bs";
+import btnD from '../images/btnD.png'
 
 const Background = styled.div`
 	display: flex;
@@ -35,7 +36,7 @@ const LoginCol = styled.div`
 `;
 
 const LabelDiv = styled.div`
-	margin-bottom: 1.5rem;
+	margin-bottom: 1rem;
 	display: flex;
 	flex-direction: column;
 `;
@@ -54,7 +55,7 @@ const Input = styled.input`
 	margin-left: 0.5rem;
 	border: none;
 	background-color: transparent;
-
+	
 		&:focus {
 			outline: none;
 		}
@@ -67,9 +68,9 @@ const Relative = styled.div`
 	align-items: center;
 	border-radius: 5px;
 	padding: 0.5rem;
-	height: 40px;
+	height: 35px;
 	transition: background-color 0.5s ease;
-	border: ${props => props.clicked && !props.validate ? '2px solid red' : props.clicked && props.validate ? '2px solid black' : props.clicked ? '2px solid black' : '1px solid #B4B4B8'};
+	border: ${props => props.clicked && !props.validate ? '2px solid red' : props.clicked && props.validate ? '2px solid black' : props.clicked ? '2px solid black' : '1px solid #E3E1D9'};
 	background-color: ${props => (props.hover || props.clicked) ? "#EEEDEB" : "transparent"};
 	box-sizing: border-box;
 `;
@@ -79,25 +80,68 @@ const LoginButton = styled.button`
 	align-items: center;
 	text-align: center;
 	border-radius: 5px;
-	background-color: 'eeedeb';
+	background-color: black;
 	border-color: transparent;
-	height: 40px;
-	
-	h6 {
+	height: 35px;
+	transition: all 0.3s ease;
+	padding: 0.5rem;
+	&:disabled {
+		background-color: #C7C8CC;
+		cursor:not-allowed;
+	}
+
+	p {
 		margin-bottom: 0;
 		color: white;
+		font-size: 0.8rem;
 	}
 `;
 
+const SignUpButton = styled.button`
+	height: 35px;
+	border-radius: 5px;
+	padding: 0.5rem;
+	border: 1px solid #E3E1D9;
+	background-color: transparent;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	p {
+		font-size: 0.8rem;
+		margin-bottom: 0;
+		padding: 0%.5rem;
+	}
+	
+	&:nth-of-type(3) { 
+		margin-top: 0.5rem;
+	}
 
+`;
+
+const NaverLogo = styled.img`
+	width: 15px;
+	height: 15px;
+	margin-bottom: 1px;
+`;
+
+const RecoveryButton = styled.div`
+	font-size: 0.6rem;
+	cursor: pointer;
+	text-align: center;
+	color: #C7C8CC;
+	margin-top: 0.5rem;
+`;
 
 const Login = () => {
 
+	// 아이디 비밀번호 hover에 관련된 코드
 	const [IDHover, setIDHover] = useState(false);
 	const [IDClick, setIDClick] = useState(false);
 	const [PWHover, setPWHover] = useState(false);
 	const [PWClick, setPWClick] = useState(false);
-	const originRef = useRef(null);
+	
 
 	
 	const IDentered = () => {
@@ -135,6 +179,7 @@ const Login = () => {
 	}
 
 
+	// 이메일 유효성 검사 관련 코드
 	const [inputEmail, setInputEmail] = useState('');
 	const [inputPW, setInputPW] = useState('');
 	const [validate, setValidate] = useState(true);
@@ -160,6 +205,17 @@ const Login = () => {
 	
 
 
+	// 로그인 버튼 관련 코드
+
+	const [buttonDisabled, setButtonDisabled] = useState(true);
+	useEffect(() => {
+    if (inputEmail !== "" && validate && inputPW !== "") {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [inputEmail, validate, inputPW]);
+
 	return(
 		<>
 			<Background onClick={Clicked}>
@@ -178,16 +234,27 @@ const Login = () => {
 
 					<LabelDiv>
 						<Label htmlFor="pw">비밀번호</Label>
-						<Relative hover={PWHover} onMouseEnter={PWentered} onMouseLeave={PWleaved} clicked={PWClick} onClick={PWClicked}>
+						<Relative hover={PWHover} onMouseEnter={PWentered} onMouseLeave={PWleaved} clicked={PWClick} onClick={PWClicked} validate={true}>
 							<BsLock/>
 							<Input id="pw" type="password" value={inputPW} onChange={(event)=>setInputPW(event.target.value)}></Input>
 						</Relative>
 					</LabelDiv>
+						
+					<LoginButton disabled={buttonDisabled}>
+						<p>로그인</p>
+					</LoginButton>
+					<RecoveryButton>
+						도움이 필요하신가요?
+					</RecoveryButton>
+					<hr/>
+					<SignUpButton>
+						<BsEnvelope/>
+						<p>이메일로 가입하기</p>
+					</SignUpButton>
 
-					<LoginButton>
-						<h6>로그인</h6>
-					</LoginButton>	
-				
+					<SignUpButton>
+					 <NaverLogo src={btnD} /> <p>네이버로 가입/로그인하기</p>
+					</SignUpButton>
 					</LoginCol>				
 				</LoginBox>
 			</Background>
