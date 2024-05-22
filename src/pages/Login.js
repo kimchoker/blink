@@ -216,7 +216,7 @@ const Login = () => {
 					<hr/>
 					<LabelDiv> 
 						<Label htmlFor="id">아이디</Label>
-						<Relative hover={IDHover} onMouseEnter={IDentered} onMouseLeave={IDleaved} clicked={IDClick} onClick={IDClicked} validate={validate}>
+						<Relative hover={IDHover?  1 : 0} onMouseEnter={IDentered} onMouseLeave={IDleaved} clicked={IDClick?  1 : 0} onClick={IDClicked} validate={validate? 1 : 0}>
 							<BsEnvelope/>
 							<Input id="id" type="email" value={inputEmail} onChange={onChangeEmail}></Input>
 						</Relative>
@@ -225,7 +225,7 @@ const Login = () => {
 
 					<LabelDiv>
 						<Label htmlFor="pw">비밀번호</Label>
-						<Relative hover={PWHover} onMouseEnter={PWentered} onMouseLeave={PWleaved} clicked={PWClick} onClick={PWClicked} validate={true}>
+						<Relative hover={PWHover?  1 : 0} onMouseEnter={PWentered} onMouseLeave={PWleaved} clicked={PWClick ?  1 : 0} onClick={PWClicked} validate={1}>
 							<BsLock/>
 							<Input id="pw" type="password" value={inputPW} onChange={(event)=>setInputPW(event.target.value)}></Input>
 						</Relative>

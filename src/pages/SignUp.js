@@ -180,11 +180,11 @@ const SignUp = () => {
 					<hr/>
 					<LabelDiv>
 						<Label htmlFor="email">이메일</Label>
-						<Relative hover={IDHover} onMouseEnter={IDentered} onMouseLeave={IDleaved} clicked={IDClick} onClick={IDClicked} validate={validate}>
+						<Relative hover={IDHover?  1 : 0} onMouseEnter={IDentered} onMouseLeave={IDleaved} clicked={IDClick?  1 : 0} onClick={IDClicked} validate={validate?  1 : 0}>
 							<BsEnvelope/>
 							<Input id="id" type="email" value={inputEmail} onChange={onChangeEmail}></Input>		
 						</Relative>
-						<InvisibleP visible={info !== ""}>{info}</InvisibleP>
+						<InvisibleP visible={info !== "" ?  1 : 0}>{info}</InvisibleP>
 					</LabelDiv>
 					<SignUpButton disabled={buttonDisabled}>
 						<p>이메일 인증</p> <WhiteEnvelopeArrowUp/>
