@@ -22,35 +22,15 @@ const CardDiv = styled.div`
 
 const Card = styled.div.attrs(props => ({
   style: {
-    transform: `perspective(500px) rotateY(${props.rotatey}deg) rotateX(${props.rotatex}deg)`
+    transform: `perspective(500px) rotateY(${props.$rotatey}deg) rotateX(${props.$rotatex}deg)`
   },
 }))`
   will-change: transform;
   display: inline-grid;
   width: 300px;
   height: 440px;
-  transition: transform 0.4s ease;
+  transition: transform 0.6s ease;
 `;
-
-const gradientStyles = {
-  style1: {
-    background: 'linear-gradient(105deg, transparent 40%, rgba(132, 50, 255, 0.8) 45%, rgba(0, 123, 255, 0.6) 50%, transparent 54%)',
-    mixBlendMode: 'color-dodge',
-    backgroundSize: '150% 150%',
-    filter: 'brightness(1.2) opacity(0.5)',
-  },
-  style2: {
-    background: 'radial-gradient(circle, white 5%, transparent)',
-    mixBlendMode: 'color-dodge',
-    backgroundSize: '150% 150%',
-    filter: 'brightness(1.2) opacity(0.)',
-  },
-  style3: {
-    // background: '',
-    // mixBlendMode: '',
-    // backgroundSize: ''
-  },
-};
 
 const FrontDiv = styled.div`
   position: relative;
@@ -59,8 +39,8 @@ const FrontDiv = styled.div`
 
 const CardFront = styled.div.attrs(props => ({
   style: {
-    transform: `perspective(800px) rotateY(${props.isflipped ? 0 : 180}deg)`,
-    boxShadow: `${props.rotatey * 0.5}px ${props.rotatex * 0.5}px 20px rgba(0, 0, 0, 0.3)`
+    transform: `perspective(800px) rotateY(${props.$isflipped ? 0 : 180}deg)`,
+    boxShadow: `${props.$rotatey * 0.5}px ${props.$rotatex * 0.5}px 20px rgba(0, 0, 0, 0.3)`
   },
 }))`
   background-size: cover;
@@ -74,12 +54,12 @@ const CardFront = styled.div.attrs(props => ({
 
 const Style1 = styled.div.attrs(props => ({
   style: {
-    display: props.display.active == true && props.display.style == 1 ? 'flex' : 'none',
+    display: props.display.active === true && props.display.style === '1' ? 'flex' : 'none',
     background: 'linear-gradient(105deg, transparent 40%, rgba(132, 50, 255, 0.8) 45%, rgba(0, 123, 255, 0.6) 50%, transparent 54%)',
     mixBlendMode: 'color-dodge',
     backgroundSize: '150% 150%',
     filter: 'brightness(1.2) opacity(0.5)',
-    backgroundPosition: `${props.position.x}% ${props.position.y}%`
+    backgroundPosition: `${props.$position.x}% ${props.$position.y}%`
   }
 }))`
   position: absolute;
@@ -94,21 +74,21 @@ const Style1 = styled.div.attrs(props => ({
 
 const Style2 = styled.div.attrs(props => ({
   style: {
-    display: props.display.active == true && props.display.style == 2 ? 'flex' : 'none',
-    background: 'radial-gradient(circle, white, transparent)',
-    mixBlendMode: 'color-dodge',
-    backgroundSize: '120% 120%',
-    filter: 'brightness(1.5) opacity(0.32)',
-    backgroundPosition: `${props.position.x}% ${props.position.y}%`,
+    display: props.display.active === true && props.display.style === '2' ? 'flex' : 'none',
+    background: 'radial-gradient(circle, white , transparent)',
+    // mixBlendMode: 'color-dodge',
+    backgroundSize: '100% 100%',
+    filter: 'brightness(2.0) opacity(0.3)',
+    transform: `translate(-${props.$position.x}px, ${props.$position.y}px)`,
     backgroundRepeat: 'no-repeat'
   }
 }))`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
   transition:  0.3s ease;
   will-change: transform;
   
@@ -117,8 +97,8 @@ const Style2 = styled.div.attrs(props => ({
 
 const CardBack = styled.div.attrs(props => ({
   style: {
-    transform: `perspective(800px) rotateY(${props.isflipped ? 0 : 180}deg)`,
-    boxShadow: `${props.rotatey * 0.5}px ${props.rotatex * 0.5}px 20px rgba(0, 0, 0, 0.3)`
+    transform: `perspective(800px) rotateY(${props.$isflipped ? 0 : 180}deg)`,
+    boxShadow: `${props.$rotatey * 0.5}px ${props.$rotatex * 0.5}px 20px rgba(0, 0, 0, 0.3)`
   },
 }))`
   grid-area: 1 / 1 / 1 / 1;
@@ -216,18 +196,19 @@ const Main = () => {
     setRotateY(rotateY);
 
     // 버튼 선택값에 따라 해당 계산 수행
-    if (whichStyle == 1) {
+    if (whichStyle === '1') {
         // 1번
         const brightness = x + y / 3;
         setPosition({ x: brightness, y: 50 });
-    } else if (whichStyle == 2) {
+    } else if (whichStyle === '2') {
       const positionX = (x / card.width) * 100;
       const positionY = (y / card.height) * 100;
       setPosition({ x: positionX, y: positionY });
-    } else if (whichStyle == 3) {
+      
+    } else if (whichStyle === '3') {
         // 3번
         // 여기에 3번 계산 코드 추가
-    } else if (whichStyle == 4) {
+    } else if (whichStyle === '4') {
         // 4번
         // 여기에 4번 계산 코드 추가
     }
@@ -239,7 +220,7 @@ const Main = () => {
   const handleMouseLeave = () => {
     setRotateX(0);
     setRotateY(0);
-    setPosition(0);
+    setPosition({ x : 0, y : 0 });
     setDisplay(prevState => ({...prevState, active:false}));
   };
 
@@ -263,28 +244,28 @@ const Main = () => {
         <Card
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          rotatex={rotateX}
-          rotatey={rotateY}
+          $rotatex={rotateX}
+          $rotatey={rotateY}
         >
           <FrontDiv>
             <CardFront
-              isflipped={isFlipped ? 1 : 0}
-              rotatex={rotateX}
-              rotatey={rotateY}
+              $isflipped={isFlipped ? 1 : 0}
+              $rotatex={rotateX}
+              $rotatey={rotateY}
             />
             <Style1
               display={display}
-              position={position}
+              $position={position}
             />
             <Style2
               display={display}
-              position={position}
+              $position={position}
             />
           </FrontDiv>
           <CardBack
-            isflipped={isFlipped ? 1 : 0}
-            rotatex={rotateX}
-            rotatey={rotateY}
+            $isflipped={isFlipped ? 1 : 0}
+            $rotatex={rotateX}
+            $rotatey={rotateY}
           />
         </Card>
 
@@ -296,7 +277,7 @@ const Main = () => {
             {['1', '2', '3', '4'].map((buttonName) => (
               <SelectButton
                 key={buttonName}
-                isselected={whichStyle === buttonName ? 1 : 0}
+                $isselected={whichStyle === buttonName ? 1 : 0}
                 onClick={() => handleButton(buttonName)}
               >
                 {buttonName}
