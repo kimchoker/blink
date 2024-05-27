@@ -22,14 +22,17 @@ const CardDiv = styled.div`
 
 const Card = styled.div.attrs(props => ({
   style: {
-    transform: `perspective(500px) rotateY(${props.$rotatey}deg) rotateX(${props.$rotatex}deg)`
+    transform: `perspective(500px) rotateY(${props.$rotatey}deg) rotateX(${props.$rotatex}deg)`,
+    
   },
 }))`
   will-change: transform;
   display: inline-grid;
   width: 300px;
   height: 440px;
-  transition: transform 0.6s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+
 `;
 
 const FrontDiv = styled.div`
@@ -46,35 +49,57 @@ const CardFront = styled.div.attrs(props => ({
   background-size: cover;
   background-image: url(${sample});
   border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform, box-shadow;
+  transition: all 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
   width: 100%;
   height: 100%;
+  
 `;
 
 const Style1 = styled.div.attrs(props => ({
   style: {
     display: props.display.active === true && props.display.style === '1' ? 'flex' : 'none',
-    background: 'linear-gradient(105deg, transparent 40%, rgba(132, 50, 255, 0.8) 45%, rgba(0, 123, 255, 0.6) 50%, transparent 54%)',
-    mixBlendMode: 'color-dodge',
-    backgroundSize: '150% 150%',
-    filter: 'brightness(1.2) opacity(0.5)',
     backgroundPosition: `${props.$position.x}% ${props.$position.y}%`
+    
   }
 }))`
   position: absolute;
+  background: linear-gradient(105deg, transparent 40%, rgba(132, 50, 255, 0.8) 45%, rgba(0, 123, 255, 0.6) 50%, transparent 54%);
+  mix-Blend-Mode: color-dodge;
+  background-Size: 150% 150%;
+  filter: brightness(1.2) opacity(0.5);
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  transition:  0.3s ease;
+  transition: all 0.3s ease;
   will-change: transform;
 `;
 
 const Style2 = styled.div.attrs(props => ({
   style: {
-    display: props.display.active === true && props.display.style === '2' ? 'flex' : 'none',
+    display: props.display.active && props.display.style === '2' ? 'flex' : 'none',
+    background: `radial-gradient(circle at ${props.$position.x}% ${props.$position.y}%, hsl(180, 100%, 95%) 5%, hsla(0, 0%, 39%, 0.25) 55%, hsla(0, 0%, 0%, 0.36) 110%)`
+  }
+}))`
+  position: fixed;
+  mix-blend-mode: overlay;
+  filter: brightness(0.7) contrast(1);
+  background-size: 100% 100%;
+  background-position: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+`;  
+
+
+
+const Style3 = styled.div.attrs(props => ({
+  style: {
+    display: props.display.active === true && props.display.style === '3' ? 'flex' : 'none',
     background: 'radial-gradient(circle, white , transparent)',
     // mixBlendMode: 'color-dodge',
     backgroundSize: '100% 100%',
@@ -180,16 +205,26 @@ const Main = () => {
     console.log(display)
   }
 
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
+
+
   const handleMouseMove = (event) => {
-    const card = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - card.left;
-    const y = event.clientY - card.top;
+    let card = event.currentTarget.getBoundingClientRect();
+    let x = event.clientX - card.left;
+    let y = event.clientY - card.top;
 
-    const halfWidth = card.width / 2;
-    const halfHeight = card.height / 2;
+    let halfWidth = card.width / 2;
+    let halfHeight = card.height / 2;
 
-    const rotateY = ((x - halfWidth) / halfWidth) * 20; // 좌우 회전 각도 조정
-    const rotateX = -((y - halfHeight) / halfHeight) * 20; // 상하 회전 각도 조정
+    let width = card.width;
+    let height = card.height;
+
+    let rotateY = -((x - halfWidth) / halfWidth) * 20; // 좌우 회전 각도 조정
+    let rotateX = ((y - halfHeight) / halfHeight) * 20; // 상하 회전 각도 조정
+
+
     
     setDisplay(prevState => ({...prevState, active:true}));
     setRotateX(rotateX);
