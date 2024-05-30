@@ -100,23 +100,40 @@ const Style2 = styled.div.attrs(props => ({
 const Style3 = styled.div.attrs(props => ({
   style: {
     display: props.display.active === true && props.display.style === '3' ? 'flex' : 'none',
-    background: 'radial-gradient(circle, white , transparent)',
-    // mixBlendMode: 'color-dodge',
+    background: 'repeating-linear-gradient(-22deg, hsla(283, 49%, 60%, 0.75) 5%, hsla(2, 74%, 59%, 0.75) 10%, hsla(53, 67%, 53%, 0.75) 15%, hsla(93, 56%, 52%, 0.75) 20%, hsla(176, 38%, 50%, 0.75) 25%, hsla(228, 100%, 77%, 0.75) 30%, hsla(283, 49%, 61%, 0.75) 35%',
+    mixBlendMode: 'color-dodge',
     backgroundSize: '100% 100%',
-    filter: 'brightness(2.0) opacity(0.3)',
+    filter: `brightness(calc((${props.$center}*0.2) + 0.5)) contrast(2.5) saturate(1)`,
     transform: `translate(-${props.$position.x}px, ${props.$position.y}px)`,
-    backgroundRepeat: 'no-repeat'
   }
 }))`
   position: absolute;
   top: 0;
   left: 0;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  transition:  0.3s ease;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  transition: all 0.3s ease;
   will-change: transform;
-  
+    &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient( 
+        farthest-corner circle ellipse at (${props=>props.$position.x} * 0.5 + 25%) (${props=>props.$position.y} * 0.5 + 25%), 
+        hsla(0, 0%, 100%, 1) 10%, 
+        hsla(0, 0%, 100%, 0.6) 35%, 
+        hsla(180, 11%, 35%, 1) 60% 
+      );
+    mix-blend-mode: hard-light;
+    pointer-events: none; /* 마우스 이벤트를 차단하여 상호작용에 영향을 주지 않음 */
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
 `;
 
 
@@ -205,9 +222,7 @@ const Main = () => {
     console.log(display)
   }
 
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
+  const [fromCenter, setFromCenter] = useState(0);
 
 
   const handleMouseMove = (event) => {
@@ -241,8 +256,10 @@ const Main = () => {
       setPosition({ x: positionX, y: positionY });
       
     } else if (whichStyle === '3') {
-        // 3번
-        // 여기에 3번 계산 코드 추가
+        let distanceFromCenter = Math.sqrt(Math.pow(x - halfWidth, 2) + Math.pow(y - halfHeight, 2));
+        let maxDistance = Math.sqrt(Math.pow(halfWidth, 2) + Math.pow(halfHeight, 2));
+        let pointerFromCenter = distanceFromCenter / maxDistance;
+        setFromCenter(pointerFromCenter);
     } else if (whichStyle === '4') {
         // 4번
         // 여기에 4번 계산 코드 추가
@@ -295,6 +312,11 @@ const Main = () => {
             <Style2
               display={display}
               $position={position}
+            />
+            <Style3
+              display={display}
+              $position={position}
+              $center={fromCenter}
             />
           </FrontDiv>
           <CardBack
