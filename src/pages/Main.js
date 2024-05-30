@@ -95,16 +95,19 @@ const Style2 = styled.div.attrs(props => ({
   border-radius: 10px;
 `;  
 
+const Style3Div = styled.div`
 
+`;
 
 const Style3 = styled.div.attrs(props => ({
   style: {
     display: props.display.active === true && props.display.style === '3' ? 'flex' : 'none',
     background: 'repeating-linear-gradient(-22deg, hsla(283, 49%, 60%, 0.75) 5%, hsla(2, 74%, 59%, 0.75) 10%, hsla(53, 67%, 53%, 0.75) 15%, hsla(93, 56%, 52%, 0.75) 20%, hsla(176, 38%, 50%, 0.75) 25%, hsla(228, 100%, 77%, 0.75) 30%, hsla(283, 49%, 61%, 0.75) 35%',
-    mixBlendMode: 'color-dodge',
-    backgroundSize: '100% 100%',
-    filter: `brightness(calc((${props.$center}*0.2) + 0.5)) contrast(2.5) saturate(1)`,
-    transform: `translate(-${props.$position.x}px, ${props.$position.y}px)`,
+    mixBlendMode: 'soft-light',
+    backgroundSize: '15% 10%',
+    filter: `brightness((${props.$center} * 0.3) + 0.5) contrast(2.5) saturate(1)`,
+    backgroundPosition: `${props.$position.x * 2}px ${props.$position.y * 2}px, ${props.$position.x * 2}px ${props.$position.y * 2}px`,
+
   }
 }))`
   position: absolute;
@@ -114,28 +117,75 @@ const Style3 = styled.div.attrs(props => ({
   height: 100%;
   border-radius: 10px;
   transition: all 0.3s ease;
-  will-change: transform;
-    &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      radial-gradient( 
-        farthest-corner circle ellipse at (${props=>props.$position.x} * 0.5 + 25%) (${props=>props.$position.y} * 0.5 + 25%), 
-        hsla(0, 0%, 100%, 1) 10%, 
-        hsla(0, 0%, 100%, 0.6) 35%, 
-        hsla(180, 11%, 35%, 1) 60% 
-      );
-    mix-blend-mode: hard-light;
-    pointer-events: none; /* 마우스 이벤트를 차단하여 상호작용에 영향을 주지 않음 */
-    border-radius: 10px;
-    transition: all 0.3s ease;
-  }
+  will-change: background-position;
+  background-color: rgba(255, 255, 255, 0.2);
 `;
 
+const Style3Glare = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-image: 
+    radial-gradient( 
+      farthest-corner ellipse at calc((${props => props.$position.x} * 0.5 + 25%)) calc((${props => props.$position.y} * 0.5 + 25%)), 
+      hsl(0, 0%, 100%) 5%, 
+      hsla(300, 100%, 11%, 0.6) 40%, 
+      hsl(0, 0%, 22%) 120% 
+    );
+
+  background-position: center center;
+  background-size: 400% 500%;
+  filter: brightness(calc(${props => props.$center} * 0.2 + 0.4)) contrast(5) saturate(1.1);
+  mix-blend-mode: hard-light;
+  border-radius: 10px;
+`;
+
+
+const Style4 = styled.div`
+  --space: 6%;
+  --angle: 133deg;
+  --imgsize: cover;
+
+  background-image:
+    repeating-linear-gradient( -33deg, 
+      hsl(2, 70%, 47%) calc(var(--space)*1),  
+      hsl(228, 60%, 64%) calc(var(--space)*2), 
+      hsl(176, 55%, 39%) calc(var(--space)*3), 
+      hsl(123, 68%, 35%) calc(var(--space)*4), 
+      hsl(283, 75%, 57%) calc(var(--space)*5), 
+      hsl(2, 70%, 47%) calc(var(--space)*6)
+    ),
+    repeating-linear-gradient( 
+      var(--angle), 
+      hsla(227, 53%, 12%, 0.5) 0%, 
+      hsl(180, 10%, 50%) 2.5%, 
+      hsl(83, 50%, 35%) 5%, 
+      hsl(180, 10%, 50%) 7.5%, 
+      hsla(227, 53%, 12%, 0.5) 10% , 
+      hsla(227, 53%, 12%, 0.5) 15% 
+      ),
+    radial-gradient(
+      farthest-corner circle 
+      at var(--pointer-x) var(--pointer-y),
+      hsla(189, 76%, 77%, 0.6) 0%, 
+      hsla(147, 59%, 77%, 0.6) 25%, 
+      hsla(271, 55%, 69%, 0.6) 50%, 
+      hsla(355, 56%, 72%, 0.6) 75%
+    );
+
+  background-blend-mode: difference, luminosity, soft-light;
+  background-size: var(--imgsize), 1100% 1100%, 600% 600%, 200% 200%;
+  background-position: 
+    center, 
+    var(--background-x) var(--background-y), 
+    var(--background-x) var(--background-y), 
+    var(--background-x) var(--background-y);
+
+  filter: brightness(calc((var(--pointer-from-center) * .4) + .4)) contrast(2) saturate(1);
+`;
 
 const CardBack = styled.div.attrs(props => ({
   style: {
@@ -256,6 +306,9 @@ const Main = () => {
       setPosition({ x: positionX, y: positionY });
       
     } else if (whichStyle === '3') {
+        const positionX = (x / card.width) * 100;
+        const positionY = (y / card.height) * 100;
+        setPosition({ x: positionX, y: positionY });
         let distanceFromCenter = Math.sqrt(Math.pow(x - halfWidth, 2) + Math.pow(y - halfHeight, 2));
         let maxDistance = Math.sqrt(Math.pow(halfWidth, 2) + Math.pow(halfHeight, 2));
         let pointerFromCenter = distanceFromCenter / maxDistance;
@@ -313,10 +366,20 @@ const Main = () => {
               display={display}
               $position={position}
             />
-            <Style3
+            <Style3Div>
+              <Style3
+                display={display}
+                $position={position}
+                $center={fromCenter}
+              />
+              <Style3Glare
+                $position={position}
+                $center={fromCenter}
+              />
+            </Style3Div>
+            <Style4
               display={display}
               $position={position}
-              $center={fromCenter}
             />
           </FrontDiv>
           <CardBack
