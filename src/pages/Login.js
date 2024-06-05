@@ -4,6 +4,8 @@ import { BsEnvelope, BsLock } from "react-icons/bs";
 import btnD from '../images/btnD.png'
 import { useNavigate } from "react-router-dom";
 import { validateEmail } from "../utils/utils"
+import axios from "axios";
+
 
 const Background = styled.div`
 	display: flex;
@@ -207,6 +209,26 @@ const Login = () => {
     }
   }, [inputEmail, validate, inputPW]);
 
+  const login = async () => {
+		console.log(inputEmail);
+		console.log(inputPW);
+    try {
+      const response = await axios.post('http://localhost:8080/login', {
+        username: inputEmail,
+        password: inputPW
+      });
+
+      if (response.status === 200) {
+        navigate('/');
+      } else {
+        alert('로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      alert('로그인에 실패했습니다.');
+    }
+  }
+
 	return(
 		<>
 			<Background onClick={Clicked}>
@@ -218,7 +240,7 @@ const Login = () => {
 						<Label htmlFor="id">아이디</Label>
 						<Relative hover={IDHover?  1 : 0} onMouseEnter={IDentered} onMouseLeave={IDleaved} clicked={IDClick?  1 : 0} onClick={IDClicked} validate={validate? 1 : 0}>
 							<BsEnvelope/>
-							<Input id="id" type="email" value={inputEmail} onChange={onChangeEmail}></Input>
+							<Input name="username" id="id" type="email" value={inputEmail} onChange={onChangeEmail}></Input>
 						</Relative>
 						
 					</LabelDiv>
@@ -227,11 +249,11 @@ const Login = () => {
 						<Label htmlFor="pw">비밀번호</Label>
 						<Relative hover={PWHover?  1 : 0} onMouseEnter={PWentered} onMouseLeave={PWleaved} clicked={PWClick ?  1 : 0} onClick={PWClicked} validate={1}>
 							<BsLock/>
-							<Input id="pw" type="password" value={inputPW} onChange={(event)=>setInputPW(event.target.value)}></Input>
+							<Input name="password" id="pw" type="password" value={inputPW} onChange={(event)=>setInputPW(event.target.value)}></Input>
 						</Relative>
 					</LabelDiv>
 						
-					<LoginButton disabled={buttonDisabled}>
+					<LoginButton disabled={buttonDisabled} onClick={login}>
 						<p>로그인</p>
 					</LoginButton>
 					<RecoveryButton>
