@@ -9,7 +9,7 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: transparent;
+  background-color: #eee;
   font-family: 'NanumBarunGothic';
 `;
 
@@ -388,6 +388,23 @@ const Cards = () => {
             $rotatey={rotateY}
           />
         </Card>
+
+        <FlipButton onClick={handleFlip}>
+          <FlipIcon isrotating={isRotating ? 1 : 0} />
+        </FlipButton>
+        <BlinkButtonDiv>
+          <div>
+            {['1', '2', '3', '4'].map((buttonName) => (
+              <SelectButton
+                key={buttonName}
+                $isselected={whichStyle === buttonName ? 1 : 0}
+                onClick={() => handleButton(buttonName)}
+              >
+                {buttonName}
+              </SelectButton>
+            ))}
+          </div>
+        </BlinkButtonDiv>
       </CardDiv>
     </Background>
   );
