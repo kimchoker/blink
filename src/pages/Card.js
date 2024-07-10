@@ -28,8 +28,8 @@ const Card = styled.div.attrs(props => ({
 }))`
   will-change: transform;
   display: inline-grid;
-  width: 300px;
-  height: 440px;
+  width: 250px;
+  height: 367px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 10px;
 
@@ -194,8 +194,8 @@ const CardBack = styled.div.attrs(props => ({
   },
 }))`
   grid-area: 1 / 1 / 1 / 1;
-  width: 300px;
-  height: 440px;
+  width: 250px;
+  height: 367px;
   background-color: pink;
   backface-visibility: hidden;
   border-radius: 10px;

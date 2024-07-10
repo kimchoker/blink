@@ -8,12 +8,23 @@ const MainPage = styled.div`
   align-items: center;
   height: 100vh;
   font-family: 'NanumBarunGothic';
+	flex-direction: column;
 `;
 
+const Comment = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 20%;
+	width: 100%;
+`;
 
 const Main = () => {
 	return (
 		<MainPage>
+			<Comment>
+				
+			</Comment>
 			<SimpleSwiper/>
 		</MainPage>
 		

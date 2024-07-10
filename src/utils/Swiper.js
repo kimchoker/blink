@@ -26,7 +26,7 @@ export default function App() {
         <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
         <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
         <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
-        <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
+        <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide> 
         <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
         <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
         <SwiperSlide style={{ overflow: 'visible', borderRadius:'10px' }}><Cards/></SwiperSlide>
